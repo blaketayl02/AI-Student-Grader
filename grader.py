@@ -65,15 +65,13 @@ def grade_hpi(conversation, context, actor_name, log_file):
         Format your response as:
         SCORE: X
         Feedback: [Your detailed feedback]
-        """}
-    ]
+        """}]
     
     response = client.chat.completions.create(
         model=config.MODEL,
         messages=messages,
         reasoning_effort="high",
-        top_p=config.TOP_P,
-    )
+        top_p=config.TOP_P)
     
     score_text = response.choices[0].message.content.strip()
     log_interaction(log_file, messages, score_text)
@@ -109,15 +107,13 @@ def grade_communication(conversation, context, actor_name, log_file):
         Format your response as:
         SCORE: X
         Feedback: [Your detailed feedback]
-        """}
-    ]
+        """}]
     
     response = client.chat.completions.create(
         model=config.MODEL,
         messages=messages,
         reasoning_effort="high",
-        top_p=config.TOP_P,
-    )
+        top_p=config.TOP_P)
     
     score_text = response.choices[0].message.content.strip()
     log_interaction(log_file, messages, score_text)
@@ -153,15 +149,13 @@ def grade_ddx(conversation, context, actor_name, log_file):
         Format your response as:
         SCORE: X
         Feedback: [Your detailed feedback]
-        """}
-    ]
+        """}]
     
     response = client.chat.completions.create(
         model=config.MODEL,
         messages=messages,
         reasoning_effort="high",
-        top_p=config.TOP_P,
-    )
+        top_p=config.TOP_P)
     
     score_text = response.choices[0].message.content.strip()
     log_interaction(log_file, messages, score_text)
@@ -197,15 +191,13 @@ def grade_reasoning(conversation, context, actor_name, log_file):
         Format your response as:
         SCORE: X
         Feedback: [Your detailed feedback]
-        """}
-    ]
+        """}]
     
     response = client.chat.completions.create(
         model=config.MODEL,
         messages=messages,
         reasoning_effort="high",
-        top_p=config.TOP_P,
-    )
+        top_p=config.TOP_P)
     
     score_text = response.choices[0].message.content.strip()
     log_interaction(log_file, messages, score_text)
@@ -251,8 +243,7 @@ def process_chat_file(chat_file, output_file):
         unique_actors = set(grouped_hpi['actor.name']).union(
             set(grouped_communication['actor.name'])).union(
             set(grouped_ddx['actor.name'])).union(
-            set(grouped_reasoning['actor.name'])
-        )
+            set(grouped_reasoning['actor.name']))
         
         for actor_name in unique_actors:
             current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -270,8 +261,7 @@ def process_chat_file(chat_file, output_file):
                     hpi_match.iloc[0]['CONTENT'], 
                     context_data, 
                     actor_name, 
-                    log_file
-                )
+                    log_file)
             
             #Communication Grading
             comm_match = grouped_communication[grouped_communication['actor.name'] == actor_name]
@@ -282,8 +272,7 @@ def process_chat_file(chat_file, output_file):
                     comm_match.iloc[0]['CONTENT'], 
                     context_data, 
                     actor_name, 
-                    log_file
-                )
+                    log_file)
             
             #DDX Grading
             ddx_match = grouped_ddx[grouped_ddx['actor.name'] == actor_name]
@@ -294,8 +283,7 @@ def process_chat_file(chat_file, output_file):
                     ddx_match.iloc[0]['CONTENT'], 
                     context_data, 
                     actor_name, 
-                    log_file
-                )
+                    log_file)
             
             #Reasoning Grading
             reasoning_match = grouped_reasoning[grouped_reasoning['actor.name'] == actor_name]
@@ -306,8 +294,7 @@ def process_chat_file(chat_file, output_file):
                     reasoning_match.iloc[0]['CONTENT'], 
                     context_data, 
                     actor_name, 
-                    log_file
-                )
+                    log_file)
             
             #Process results
             result_data = {
@@ -365,4 +352,5 @@ if __name__ == '__main__':
     parser.add_argument('--output', type=str, default='05_05_25.json', help='The path to save the graded output file')
     args = parser.parse_args()
     
+
     process_chat_file(args.chat, args.output)
